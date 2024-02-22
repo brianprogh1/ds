@@ -1,78 +1,44 @@
 #include <stdio.h>
 
-void readString(char str[], const char *prompt) {
-    printf("%s", prompt);
-    scanf("%s", str);
-}
+char str[50], pat[20], rep[20], ans[50];
+int c = 0, m = 0, i = 0, j = 0, k, flag = 0;
 
-int stringLength(const char str[]) {
-    int len = 0;
-    while (str[len] != '\0') {
-        len++;
-    }
-    return len;
-}
-
-int findPattern(const char str[], const char pat[], int start) {
-    int i, j;
-    int strLen = stringLength(str);
-    int patLen = stringLength(pat);
-
-    for (i = start; i <= strLen - patLen; i++) {
-        for (j = 0; j < patLen; j++) {
-            if (str[i + j] != pat[j]) {
-                break;
+void stringmatch() {
+    while (str[c] != '\0') {
+        if (str[m] == pat[i]) {
+            i++;
+            m++;
+            if (pat[i] == '\0') {
+                flag = 1;
+                for (k = 0; rep[k] != '\0'; k++, j++) {
+                    ans[j] = rep[k];
+                }
+                i = 0;
+                c = m;
             }
-        }
-
-        if (j == patLen) {
-            return i;
+        } else {
+            ans[j] = str[c];
+            j++;
+            c++;
+            m = c;
+            i = 0;
         }
     }
-
-    return -1; 
-}
-
-void replacePattern(char str[], const char pat[], const char rep[]) {
-    int patIndex = 0;
-    int repIndex = 0;
-    int strIndex = 0;
-
-    while (str[strIndex] != '\0') {
-        patIndex = findPattern(str, pat, strIndex);
-
-        if (patIndex == -1) {
-            break;
-        }
-
-        while (strIndex < patIndex) {
-            strIndex++;
-        }
-
-        while (rep[repIndex] != '\0') {
-            str[strIndex++] = rep[repIndex++];
-        }
-
-        strIndex += stringLength(pat);
-        repIndex = 0;
-    }
+    ans[j] = '\0';
 }
 
 int main() {
-    char mainString[100], patternString[50], replaceString[50];
-
-    readString(mainString, "Enter the main string: ");
-    readString(patternString, "Enter the pattern string: ");
-    readString(replaceString, "Enter the replace string: ");
-
-    int patIndex = findPattern(mainString, patternString, 0);
-
-    if (patIndex == -1) {
-        printf("Pattern not found in the main string.\n");
-    } else {
-        replacePattern(mainString, patternString, replaceString);
-        printf("String after replacement: %s\n", mainString);
-    }
+    printf("\nEnter the main string:");
+    gets(str);
+    printf("\nEnter the pat string:");
+    gets(pat);
+    printf("\nEnter the replace string:");
+    gets(rep);
+    stringmatch();
+    if (flag == 1)
+        printf("\nResultant string is %s", ans);
+    else
+        printf("\nPattern string is not found");
 
     return 0;
 }

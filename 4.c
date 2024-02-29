@@ -1,4 +1,3 @@
-/* Conversion of infix to postfix expression */
 #include<stdio.h>
 #include<string.h>
 
@@ -10,18 +9,23 @@ void infixtopostfix(char in[], char post[])
     int i = 0, j = 0, top = -1;
     char stk[20], sym;
     stk[++top] = '#';
+
     while (in[i] != '\0')
     {
         sym = in[i++];
         while (f(stk[top]) > g(sym))
             post[j++] = stk[top--];
+
         if (f(stk[top]) != g(sym))
             stk[++top] = sym;
         else
             stk[top--];
     }
+
     while (stk[top] != '#')
+    {
         post[j++] = stk[top--];
+    }
     post[j++] = '\0';
 }
 
@@ -74,9 +78,13 @@ int g(char sym)
 int main()
 {
     char infix[50], postfix[50];
-    printf("enter the valid infix expression \n");
+
+    printf("Enter the valid infix expression:\n");
     scanf("%s", infix);
+
     infixtopostfix(infix, postfix);
-    printf("the given infix expression is %s and the equivalent postfix expression is %s", infix, postfix);
+
+    printf("The given infix expression is %s and the equivalent postfix expression is %s", infix, postfix);
+
     return 0;
 }
